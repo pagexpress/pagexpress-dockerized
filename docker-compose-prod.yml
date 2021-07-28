@@ -1,0 +1,52 @@
+version: '3'
+services:
+  px_server:
+    build:
+      context: .
+      dockerfile: ./docker/server/prod/Dockerfile
+    command: npm start
+    restart: always
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    volumes:
+      - ./px/packages/pagexpress-server:/usr/src/app
+      - ./docker/config:/usr/src/app/config
+      - node_modules_server:/usr/src/app/node_modules
+      - ./environment/env-prod:/usr/src/app/.env
+    depends_on:
+      - px_mongo
+    networks:
+      - px
+  px_client:
+    build:
+      context: .
+      dockerfile: ./docker/client/prod/Dockerfile
+    restart: always
+    ports:
+      - ${NUXT_PORT}:${NUXT_PORT}
+    volumes:
+      - ./px/packages/pagexpress:/usr/src/app
+      - node_modules_client:/usr/src/app/node_modules
+      - ./environment/env-prod:/usr/src/app/.env
+    depends_on:
+      - px_server
+    networks:
+      - px
+  px_mongo:
+    image: mongo
+    ports:
+      - 27018:${DB_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - px_mongodb:/data/db
+    networks:
+      - px
+volumes:
+  px_mongodb:
+  node_modules_client:
+  node_modules_server:
+networks:
+  px:
+    driver: bridge
