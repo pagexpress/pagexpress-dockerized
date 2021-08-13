@@ -1,51 +1,51 @@
 version: "3"
 services:
-  px_staging_server:
+  px_dev_server:
     build:
       context: .
       dockerfile: ./docker/server/dev/Dockerfile
     restart: always
     ports:
-      - 4200:4200
+      - 4000:4000
     volumes:
       - ./px/packages/pagexpress-server:/usr/src/app
       - ./docker/config:/usr/src/app/config
-      - px_staging_node_modules_server:/usr/src/app/node_modules
+      - px_dev_node_modules_server:/usr/src/app/node_modules
       - ./environment/env-dev:/usr/src/app/.env
     depends_on:
-      - px_staging_mongo
+      - px_dev_mongo
     networks:
-      - px_staging
-  px_staging_client:
+      - px_dev
+  px_dev_client:
     build:
       context: .
       dockerfile: ./docker/client/dev/Dockerfile
     restart: always
     ports:
-      - 3200:3200
+      - 3000:3000
     volumes:
       - ./px/packages/pagexpress:/usr/src/app
-      - px_staging_node_modules_client:/usr/src/app/node_modules
+      - px_dev_node_modules_client:/usr/src/app/node_modules
       - ./environment/env-dev:/usr/src/app/.env
     depends_on:
-      - px_staging_server
+      - px_dev_server
     networks:
-      - px_staging
-  px_staging_mongo:
+      - px_dev
+  px_dev_mongo:
     image: mongo
     ports:
-      - 27019:27017
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - px_staging_mongodb:/data/db
+      - px_dev_mongodb:/data/db
     networks:
-      - px_staging
+      - px_dev
 volumes:
-  px_staging_mongodb:
-  px_staging_node_modules_client:
-  px_staging_node_modules_server:
+  px_dev_mongodb:
+  px_dev_node_modules_client:
+  px_dev_node_modules_server:
 networks:
-  px_staging:
+  px_dev:
     driver: bridge
