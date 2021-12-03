@@ -11,7 +11,8 @@ services:
       - ./px/packages/pagexpress-server:/usr/src/app
       - ./docker/config:/usr/src/app/config
       - px_dev_node_modules_server:/usr/src/app/node_modules
-      - ./environment/env-dev:/usr/src/app/.env
+    env_file:
+      - ./environment/env-dev
     depends_on:
       - px_dev_mongo
     networks:
@@ -26,7 +27,8 @@ services:
     volumes:
       - ./px/packages/pagexpress:/usr/src/app
       - px_dev_node_modules_client:/usr/src/app/node_modules
-      - ./environment/env-dev:/usr/src/app/.env
+    env_file:
+      - ./environment/env-dev
     depends_on:
       - px_dev_server
     networks:
