@@ -1,3 +1,4 @@
 [submodule "px"]
 	path = px
-	url = git@github.com:pagexpress/pagexpress.git
+	url = git@github.com:weborg-io/pagexpress.git
+        branch = main
