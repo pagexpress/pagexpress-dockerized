@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   px_server:
     build:
@@ -12,7 +12,8 @@ services:
       - ./px/packages/pagexpress-server:/usr/src/app
       - ./docker/config:/usr/src/app/config
       - node_modules_server:/usr/src/app/node_modules
-      - ./environment/env-prod:/usr/src/app/.env
+    env_file:
+      - ./environment/env-prod
     depends_on:
       - px_mongo
     networks:
@@ -27,7 +28,8 @@ services:
     volumes:
       - ./px/packages/pagexpress:/usr/src/app
       - node_modules_client:/usr/src/app/node_modules
-      - ./environment/env-prod:/usr/src/app/.env
+    env_file:
+      - ./environment/env-prod
     depends_on:
       - px_server
     networks:
