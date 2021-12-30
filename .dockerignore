@@ -1,2 +1,5 @@
 node_modules
+px/node_modules
+px/packages/pagexpress-server/node_modules
+px/packages/pagexpress/node_modules
 npm-debug.log
